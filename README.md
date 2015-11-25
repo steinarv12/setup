@@ -1,2 +1,2 @@
-# setup
-Setup scripts and such
+# Setup
+Setup scripts for Ubuntu and more
