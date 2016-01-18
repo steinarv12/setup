@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# Invert script
+
+apt-get install xcalib
+echo "alias invert='xcalib -i -a'" >> ~/.bash_aliases
+
+# Sublime
+
 add-apt-repository ppa:webupd8team/sublime-text-3
 apt-get update
 apt-get install sublime-text-installer -y
