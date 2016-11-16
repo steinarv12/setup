@@ -5,22 +5,22 @@
 function baseline {
 	# Extra programs
 
-	printf "Installing git..."
+	printf "Installing git...\n"
 	apt-get -qq install git -y
-	printf "Installing vim..."
+	printf "Installing vim...\n"
 	apt-get -qq install vim -y
-	printf "Installing curl..."
+	printf "Installing curl...\n"
 	apt-get -qq install curl -y
 
 	# Chrome
-	printf "Setting up Chrome..."
+	printf "Setting up Chrome...\n"
 	wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
 	sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
 	apt-get -qq update -y
 	apt-get -qq install google-chrome-stable 
 
 	# Invert script
-	printf "Setting up 'invert'"
+	printf "Setting up 'invert'\n"
 	apt-get -qq install libxcb-randr0-dev -y
 	cd
 	cd Documents
@@ -34,7 +34,7 @@ function baseline {
 	cd
 
 	# Spotify
-	printf "Setting up Spotify..."
+	printf "Setting up Spotify...\n"
 	## 1. Add the Spotify repository signing key to be able to verify downloaded packages
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
 	## 2. Add the Spotify repository
@@ -44,8 +44,11 @@ function baseline {
 	## 4. Install Spotify
 	apt-get -qq install spotify-client
 
-	printf "Cosmetic work"
-	printf "Installing plank..."
+	# Conky
+	apt-get -qq install conky -y
+
+	printf "Cosmetic work\n"
+	printf "Installing plank...\n"
 
 	## Plank dock
 	add-apt-repository ppa:ricotz/docky #
@@ -53,7 +56,7 @@ function baseline {
 	apt-get -qq install plank -y
 	## plank --preferences for preferences
 
-	printf "Getting a wallpaper"
+	printf "Getting a wallpaper\n"
 	## Wallpaper - needs more work
 	cd Pictures
 	mkdir Wallpapers
@@ -67,10 +70,14 @@ function basic {
 
 }
 
+function game {
+	apt-get -qq install steam -y
+	apt-get -qq install lm-sensors -y
+}
 
 function work {
 	# Sublime
-	printf "Setting up Sublime..."
+	printf "Setting up Sublime...\n"
 	add-apt-repository ppa:webupd8team/sublime-text-3
 	apt-get -qq update -y
 	apt-get -qq install sublime-text-installer -y
@@ -99,28 +106,32 @@ then
     exit
 fi
 
-printf "Starting setup"
-printf "-----------------"
+printf "Starting setup\n"
+printf "-----------------\n"
 
 baseline
 
-printf "Please choose the purpase of this machine."
+printf "Please choose the purpase of this machine.\n"
 
 OPTIONS="Work Basic Games"
 select opt in $OPTIONS; do
    if [ "$opt" = "Work" ]; then
-   	printf "'Work' selected, starting setup..."
+   	printf "'Work' selected, starting setup...\n"
    	WALLPAPER="https://i.imgur.com/iX6hwvx.jpg"
+   	CONKYSCRIPT="conky.conf_work"
     work
     exit
    elif [ "$opt" = "Basic" ]; then
-   	printf "'Basic' selected, starting setup..."
+   	printf "'Basic' selected, starting setup...\n"
    	WALLPAPER="https://i.imgur.com/iX6hwvx.jpg"
+   	CONKYSCRIPT="conky.conf_base"
     basic
     exit
    elif [ "$opt" = "Games" ]; then
-   	printf "'Games' selected, starting setup..."
-    echo Option not ready
+   	printf "'Games' selected, starting setup...\n"
+   	WALLPAPER="http://www.pixelstalk.net/wp-content/uploads/2016/05/Gaming-Wallpapers-Images-Hd.jpg"
+   	CONKYSCRIPT="conky.conf_game"
+    game
     exit
    else
     clear
