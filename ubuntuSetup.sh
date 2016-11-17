@@ -47,6 +47,10 @@ function baseline {
 	# Conky
 	apt-get -qq install conky -y
 
+	printf "Copying conky script..."
+	echo $CONKYSCRIPT
+	cp $CONKYSCRIPT /etc/conky/conky.conf
+
 	printf "Cosmetic work\n"
 	printf "Installing plank...\n"
 
@@ -58,21 +62,22 @@ function baseline {
 
 	printf "Getting a wallpaper\n"
 	## Wallpaper - needs more work
-	cd Pictures
-	mkdir Wallpapers
-	cd Wallpapers
-	wget $WALLPAPER https://i.imgur.com/iX6hwvx.jpg
-	cd
+	mkdir ~/Pictures/Wallpapers
+	cp $WALLPAPER ~/Pictures/Wallpapers
+
+	clonky
+	plank --preferences
 
 }
 
 function basic {
-
+	printf "All done!\n"
 }
 
 function game {
 	apt-get -qq install steam -y
 	apt-get -qq install lm-sensors -y
+	cd $DIRE
 }
 
 function work {
@@ -113,24 +118,25 @@ baseline
 
 printf "Please choose the purpase of this machine.\n"
 
+DIRE=$(pwd)
 OPTIONS="Work Basic Games"
 select opt in $OPTIONS; do
    if [ "$opt" = "Work" ]; then
    	printf "'Work' selected, starting setup...\n"
-   	WALLPAPER="https://i.imgur.com/iX6hwvx.jpg"
-   	CONKYSCRIPT="conky.conf_work"
+   	WALLPAPER=$DIRE/wallpaper.jpg
+   	CONKYSCRIPT=$DIRE/conky.conf_work
     work
     exit
    elif [ "$opt" = "Basic" ]; then
    	printf "'Basic' selected, starting setup...\n"
-   	WALLPAPER="https://i.imgur.com/iX6hwvx.jpg"
-   	CONKYSCRIPT="conky.conf_base"
+   	WALLPAPER=$DIRE/iX6hwvx.jpg
+   	CONKYSCRIPT=$DIRE/conky.conf_base
     basic
     exit
    elif [ "$opt" = "Games" ]; then
    	printf "'Games' selected, starting setup...\n"
-   	WALLPAPER="http://www.pixelstalk.net/wp-content/uploads/2016/05/Gaming-Wallpapers-Images-Hd.jpg"
-   	CONKYSCRIPT="conky.conf_game"
+   	WALLPAPER=$DIRE/Gaming-Wallpapers-Images-Hd.jpg
+   	CONKYSCRIPT=$DIRE/conky.conf_game
     game
     exit
    else
@@ -138,3 +144,9 @@ select opt in $OPTIONS; do
     echo Option not available
    fi
 done
+
+printf "Setup is complete.\n"
+printf "What is needed to do manually:\n"
+printf "Set the wallpaper\n"
+printf "Edit Plank settings\n"
+printf "Autostart plank and conky\n"
