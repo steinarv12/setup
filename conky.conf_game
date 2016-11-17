@@ -1,0 +1,68 @@
+conky.config = {
+    alignment = 'top_left',
+    background = false,
+    border_width = 1,
+    cpu_avg_samples = 2,
+	color0 = '1c5e5c',
+	color1 = '86593a',
+	color2 = '18232f',
+	default_color = 'white',
+    default_outline_color = 'white',
+    default_shade_color = 'white',
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+	double_buffer = true,
+    use_xft = true,
+    font = 'DejaVu Sans Mono:size=12',
+    gap_x = 5,
+    gap_y = 0,
+    minimum_height = 5,
+	minimum_width = 5,
+    net_avg_samples = 2,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_type = 'normal',
+    own_window_hints = 'undecorated, below, sticky, skip_taskbar, skip_pager',
+	own_window_transparent = true,
+	own_window_argb_visual = true,
+	pad_percents = 3.0,
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'left',
+    show_graph_scale = false,
+    show_graph_range = false
+}
+
+conky.text = [[
+${color2}│${color0}
+${color2}│${color0}
+${color2}├─╶${color0} system
+${color2}│   ├─╶${color0} distro ${color1}[${color0} ${distribution}: ${execi 1000  uname -m} ${color1}]${color0}
+${color2}│   ├─╶${color0} user ${color1}[${color0} ${uid_name 1000} ${color1}]${color0}
+${color2}│   ├─╶${color0} host ${color1}[${color0} $nodename ${color1}]${color0}
+${color2}│   ├─╶${color0} terminals ${color1}[${color0} ${user_terms} ${color1}]${color0}
+${color2}│   ├─╶${color0} uptime ${color1}[${color0} $uptime ${color1}]${color0}
+${color2}│   │${color0}
+${color2}└─╶${color0} internet
+${color2}│   └─╶${color0} ip
+${color2}│       └─╶${color0} private ${color1}[${color0} ${execi 1000 hostname -I}${color1}]${color0}
+${color2}│   │${color0}
+${color2}├─╶${color0}${execi 1000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq}
+${color2}│   └─╶${color0} Processors
+${color2}│       ├─╶${color0} CPU1: ${cpugraph cpu1 8,200 1793d0 1793d0}
+${color2}│       ├─╶${color0} CPU2: ${cpugraph cpu2 8,200 1793d0 1793d0}
+${color2}│       ├─╶${color0} CPU3: ${cpugraph cpu3 8,200 1793d0 1793d0}
+${color2}│       ├─╶${color0} CPU4: ${cpugraph cpu4 8,200 1793d0 1793d0}
+${color2}│       ├─╶${color0} Frequency:$freq
+${color2}│       └─╶${color0} CPU Temp:${hwmon 0 temp 1}°C
+${color2}│${color0}
+${color2}└─╶${color0} Memory
+${color2}    └─╶${color0} RAM: $mem/$memmax
+]]
