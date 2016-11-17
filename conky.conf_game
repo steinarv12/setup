@@ -15,7 +15,7 @@ conky.config = {
     draw_shades = false,
 	double_buffer = true,
     use_xft = true,
-    font = 'DejaVu Sans Mono:size=12',
+    font = 'DejaVu Sans Mono:size=14',
     gap_x = 5,
     gap_y = 0,
     minimum_height = 5,
@@ -43,19 +43,17 @@ conky.config = {
 conky.text = [[
 ${color2}│${color0}
 ${color2}│${color0}
-${color2}├─╶${color0} system
+${color2}├─╶${color0} SYSTEM
 ${color2}│   ├─╶${color0} distro ${color1}[${color0} ${distribution}: ${execi 1000  uname -m} ${color1}]${color0}
 ${color2}│   ├─╶${color0} user ${color1}[${color0} ${uid_name 1000} ${color1}]${color0}
 ${color2}│   ├─╶${color0} host ${color1}[${color0} $nodename ${color1}]${color0}
 ${color2}│   ├─╶${color0} terminals ${color1}[${color0} ${user_terms} ${color1}]${color0}
-${color2}│   ├─╶${color0} uptime ${color1}[${color0} $uptime ${color1}]${color0}
-${color2}│   │${color0}
-${color2}└─╶${color0} internet
-${color2}│   └─╶${color0} ip
-${color2}│       └─╶${color0} private ${color1}[${color0} ${execi 1000 hostname -I}${color1}]${color0}
-${color2}│   │${color0}
-${color2}├─╶${color0}${execi 1000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq}
-${color2}│   └─╶${color0} Processors
+${color2}│   ├─╶${color0} uptime ${color1}[${color0} $uptime${color1}]${color0}
+${color2}│   │ ${color0}
+${color2}│   ├─╶${color0} RAM: $mem/$memmax
+${color2}│   │ ${color0}
+${color2}│   ${color0}${execi 1000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq}
+${color2}│   └─╶${color0} PROCESSORS
 ${color2}│       ├─╶${color0} CPU1: ${cpugraph cpu1 8,200 1793d0 1793d0}
 ${color2}│       ├─╶${color0} CPU2: ${cpugraph cpu2 8,200 1793d0 1793d0}
 ${color2}│       ├─╶${color0} CPU3: ${cpugraph cpu3 8,200 1793d0 1793d0}
@@ -63,6 +61,8 @@ ${color2}│       ├─╶${color0} CPU4: ${cpugraph cpu4 8,200 1793d0 1793d0}
 ${color2}│       ├─╶${color0} Frequency:$freq
 ${color2}│       └─╶${color0} CPU Temp:${hwmon 0 temp 1}°C
 ${color2}│${color0}
-${color2}└─╶${color0} Memory
-${color2}    └─╶${color0} RAM: $mem/$memmax
+${color2}└─╶${color0} INTERNET
+${color2}    └─╶${color0} IP
+${color2}        ├─╶${color0} Private ${color1}[${color0} ${execi 1000 hostname -I}${color1}]${color0}
+${color2}        └─╶${color0} Default GW ${color1}[${color0} $gw_ip${color1} ]${color0}
 ]]
