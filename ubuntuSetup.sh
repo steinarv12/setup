@@ -47,26 +47,11 @@ function baseline {
 	# Conky
 	apt-get -qq install conky -y
 
-	printf "Copying conky script..."
-	echo $CONKYSCRIPT
-	cp $CONKYSCRIPT /etc/conky/conky.conf
-
-	printf "Cosmetic work\n"
-	printf "Installing plank...\n"
-
 	## Plank dock
 	add-apt-repository ppa:ricotz/docky #
 	apt-get -qq update -y
 	apt-get -qq install plank -y
 	## plank --preferences for preferences
-
-	printf "Getting a wallpaper\n"
-	## Wallpaper - needs more work
-	mkdir ~/Pictures/Wallpapers
-	cp $WALLPAPER ~/Pictures/Wallpapers
-
-	clonky
-	plank --preferences
 
 }
 
@@ -86,6 +71,23 @@ function work {
 	add-apt-repository ppa:webupd8team/sublime-text-3
 	apt-get -qq update -y
 	apt-get -qq install sublime-text-installer -y
+}
+
+function finishing_up {
+	printf "Getting a wallpaper\n"
+	## Wallpaper - needs more work
+	mkdir ~/Pictures/Wallpapers
+	cp $DIRE/$WALLPAPER ~/Pictures/Wallpapers
+
+	printf "Copying conky script..."
+	echo $CONKYSCRIPT
+	cp $CONKYSCRIPT /etc/conky/conky.conf
+
+	for i in $(xfconf-query -c xfce4-desktop -p /backdrop -l|egrep -e "screen.*/monitor.*image-path$" -e "screen.*/monitor.*/last-image$"); do
+    	xfconf-query -c xfce4-desktop -p $i -n -t string -s ~/Pictures/Wallpapers/$WALLPAPER
+    	xfconf-query -c xfce4-desktop -p $i -s ~/Pictures/Wallpapers/$WALLPAPER
+	done
+
 }
 
 # Begin
@@ -112,7 +114,6 @@ then
 fi
 
 printf "Starting setup\n"
-printf "-----------------\n"
 
 baseline
 
@@ -123,21 +124,24 @@ OPTIONS="Work Basic Games"
 select opt in $OPTIONS; do
    if [ "$opt" = "Work" ]; then
    	printf "'Work' selected, starting setup...\n"
-   	WALLPAPER=$DIRE/wallpaper.jpg
+   	WALLPAPER=wallpaper.jpg
    	CONKYSCRIPT=$DIRE/conky.conf_work
     work
+    finishing_up
     exit
    elif [ "$opt" = "Basic" ]; then
    	printf "'Basic' selected, starting setup...\n"
-   	WALLPAPER=$DIRE/iX6hwvx.jpg
+   	WALLPAPER=iX6hwvx.jpg
    	CONKYSCRIPT=$DIRE/conky.conf_base
     basic
+    finishing_up
     exit
    elif [ "$opt" = "Games" ]; then
    	printf "'Games' selected, starting setup...\n"
-   	WALLPAPER=$DIRE/Gaming-Wallpapers-Images-Hd.jpg
+   	WALLPAPER=Gaming-Wallpapers-Images-Hd.jpg
    	CONKYSCRIPT=$DIRE/conky.conf_game
     game
+    finishing_up
     exit
    else
     clear
