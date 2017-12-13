@@ -127,10 +127,15 @@ function finishing_up {
 	done
 	'
 
+	printf "Setting wallpaper and lockscreen"
 	cd setup/
 	./lock.sh -u ~/Pictures/Wallpapers/$WALLPAPER
 	./lock.sh -w
 	cd
+	# Keyboard shortcut to lock screen with Super+l
+	xfconf-query --reset --channel xfce4-keyboard-shortcuts --property "/commands/custom/<Super>l"
+	xfconf-query --reset --channel xfce4-keyboard-shortcuts --property "/xfwm4/custom/<Super>l"
+	xfconf-query --create --channel xfce4-keyboard-shortcuts --property "/commands/custom/<Super>l" --type string --set '/bin/lock.sh -l dimblur'
 
 }
 
