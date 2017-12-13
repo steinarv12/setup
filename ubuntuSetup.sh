@@ -53,6 +53,39 @@ function baseline {
 	apt-get -qq install plank -y
 	## plank --preferences for preferences
 
+	# Lock script prerequisites
+	apt-get install libxcb1-dev
+	apt-get install libxcb-keysyms1-dev 
+	apt-get install libpango1.0-dev 
+	apt-get install libev-dev
+	apt-get install xcb
+	apt-get install libxcb-randr0-dev
+	apt-get install libxcb-util0-dev 
+	apt-get install libxcb-icccm4-dev 
+	apt-get install libxcb-xkb-dev
+	apt-get install libxcb-xinerama0-dev
+	apt-get install libxcb-composite0-dev
+	apt-get install libxcb-cursor-dev
+	apt-get install libxkbcommon-dev
+	apt-get install libxkbcommon-x11-dev
+	apt-get install libxcb-xrm0
+	apt-get install libxcb-xrm-dev
+	apt-get install libxcb-ewmh-dev 
+	apt-get install libjpeg-dev
+	apt-get install libpam0g-dev
+	apt-get install libpam-dev
+	apt-get install libcairo-dev
+	apt-get install libfontconfig-dev
+
+	git clone https://github.com/PandorasFox/i3lock-color.git
+	cd i3lock-color
+	autoreconf -i && ./configure && make
+
+	cd ../setup/
+	apt-get install imagemagick
+	apt-get install feh
+	apt-get install x11-utils
+
 }
 
 function basic {
@@ -61,7 +94,7 @@ function basic {
 
 function game {
 	apt-get -qq install steam -y
-	apt-get -qq install lm-sensors -y
+	apt-get -qq install lm-Æ:sensors -y
 	cd $DIRE
 }
 
@@ -71,6 +104,10 @@ function work {
 	add-apt-repository ppa:webupd8team/sublime-text-3
 	apt-get -qq update -y
 	apt-get -qq install sublime-text-installer -y
+	# Terminator
+	add-apt-repository ppa:gnome-terminator
+	apt-get update
+	apt-get install terminator
 }
 
 function finishing_up {
@@ -83,10 +120,17 @@ function finishing_up {
 	echo $CONKYSCRIPT
 	cp $CONKYSCRIPT /etc/conky/conky.conf
 
+	: '
 	for i in $(xfconf-query -c xfce4-desktop -p /backdrop -l|egrep -e "screen.*/monitor.*image-path$" -e "screen.*/monitor.*/last-image$"); do
     	xfconf-query -c xfce4-desktop -p $i -n -t string -s ~/Pictures/Wallpapers/$WALLPAPER
     	xfconf-query -c xfce4-desktop -p $i -s ~/Pictures/Wallpapers/$WALLPAPER
 	done
+	'
+
+	cd setup/
+	./lock.sh -u ~/Pictures/Wallpapers/$WALLPAPER
+	./lock.sh -w
+	cd
 
 }
 
@@ -117,7 +161,7 @@ printf "Starting setup\n"
 
 baseline
 
-printf "Please choose the purpase of this machine.\n"
+printf "Please choose the purpose of this machine.\n"
 
 DIRE=$(pwd)
 OPTIONS="Work Basic Games"
